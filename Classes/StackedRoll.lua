@@ -832,9 +832,7 @@ function StackedRoll:receiveUpdate(CommMessage)
         return true;
     end
 
-    GL:dump(CommMessage);
     local uuid = DB:get("StackedRoll.MetaData.uuid", '');
-    GL:debug(uuid);
 
     local importUuid = CommMessage.content.uuid or GL:uuid();
     local playerName = CommMessage.content.playerName or '';
