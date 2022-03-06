@@ -196,12 +196,17 @@ function Overview:draw()
     AliasesEditBox:SetHeight(20);
     AliasesEditBox:SetWidth(220);
     AliasesEditBox:SetText("Test");
-    AliasesEditBox:SetCallback("OnTextChanged", function (widget)
-        -- Update
-        self:updateAliases(strtrim(widget:GetText()));
-    end);
     AliasesFrame:AddChild(AliasesEditBox);
     GL.Interface:setItem(self, "Aliases", AliasesEditBox);
+
+    local ApplyAliasesButton = AceGUI:Create("Button");
+    ApplyAliasesButton:SetText("Apply aliases");
+    ApplyAliasesButton:SetWidth(120);
+    ApplyAliasesButton:SetCallback("OnClick", function()
+        local text = GL.Interface:getItem(self, "EditBox.Aliases"):GetText();
+        self:updateAliases(strtrim(text));
+    end);
+    AliasesFrame:AddChild(ApplyAliasesButton);
 
     local VerticalSpacer = AceGUI:Create("SimpleGroup");
     VerticalSpacer:SetLayout("FILL");
@@ -238,7 +243,7 @@ function Overview:draw()
     ExportButton:SetText("Export");
     ExportButton:SetWidth(80);
     ExportButton:SetCallback("OnClick", function()
-        StackedRoll:export();
+        StackedRoll:export(true);
     end);
     ButtonFrame:AddChild(ExportButton);
 
@@ -353,6 +358,7 @@ end
 
 ---@return void
 function Overview:refreshTable()
+    GL:debug("Overview:refreshTable");
     local Table = GL.Interface:getItem(self, "Table.Characters");
     if (not Table) then
         return;
